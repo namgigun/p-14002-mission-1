@@ -6,6 +6,7 @@ import com.back.domain.post.post.entity.Post;
 import com.back.domain.post.post.service.PostService;
 import com.back.global.app.CustomConfigProperties;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Profile("!prod")
 @Configuration
 @RequiredArgsConstructor
+@Log4j2
 public class NotProdInitData {
     @Autowired
     @Lazy
@@ -52,6 +54,7 @@ public class NotProdInitData {
         Member memberUser3 = memberService.join("user3", "1234", "유저3");
         memberUser3.modifyApiKey(memberUser3.getUsername());
 
+        // 소셜로그인 자동 회원가입
         customConfigProperties.getNotProdMembers().forEach(notProdMember -> {
             Member socailMember = memberService.join(notProdMember.username(), "1234", notProdMember.nickname(), notProdMember.profileImgUrl());
             socailMember.modifyApiKey(notProdMember.apiKey());
