@@ -58,8 +58,8 @@ public class ApiV1PostCommentControllerTest {
                 .andExpect(handler().methodName("getItem"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(postComment.getId()))
-                .andExpect(jsonPath("$.createDate").value(Matchers.startsWith(postComment.getCreateDate().toString().substring(0, 20))))
-                .andExpect(jsonPath("$.modifyDate").value(Matchers.startsWith(postComment.getModifyDate().toString().substring(0, 20))))
+                .andExpect(jsonPath("$.createDate").value(Matchers.startsWith(postComment.createDate.toString().substring(0, 20))))
+                .andExpect(jsonPath("$.modifyDate").value(Matchers.startsWith(postComment.modifyDate.toString().substring(0, 20))))
                 .andExpect(jsonPath("$.authorId").value(postComment.author.getId()))
                 .andExpect(jsonPath("$.authorName").value(postComment.author.getName()))
                 .andExpect(jsonPath("$.postId").value(postComment.post.getId()))
@@ -91,8 +91,8 @@ public class ApiV1PostCommentControllerTest {
 
             resultActions
                     .andExpect(jsonPath("$[%d].id".formatted(i)).value(postComment.getId()))
-                    .andExpect(jsonPath("$[%d].createDate".formatted(i)).value(Matchers.startsWith(postComment.getCreateDate().toString().substring(0, 20))))
-                    .andExpect(jsonPath("$[%d].modifyDate".formatted(i)).value(Matchers.startsWith(postComment.getModifyDate().toString().substring(0, 20))))
+                    .andExpect(jsonPath("$[%d].createDate".formatted(i)).value(Matchers.startsWith(postComment.createDate.toString().substring(0, 20))))
+                    .andExpect(jsonPath("$[%d].modifyDate".formatted(i)).value(Matchers.startsWith(postComment.modifyDate.toString().substring(0, 20))))
                     .andExpect(jsonPath("$[%d].authorId".formatted(i)).value(postComment.author.getId()))
                     .andExpect(jsonPath("$[%d].authorName".formatted(i)).value(postComment.author.getName()))
                     .andExpect(jsonPath("$[%d].postId".formatted(i)).value(postComment.post.getId()))
@@ -127,7 +127,7 @@ public class ApiV1PostCommentControllerTest {
         int postId = 1;
         int id = 1;
 
-        Member actor = memberService.findByUsername("user3").get();
+        Member actor = memberService.findByUsername("user3");
         String actorApiKey = actor.getApiKey();
 
         ResultActions resultActions = mvc
@@ -179,7 +179,7 @@ public class ApiV1PostCommentControllerTest {
         int postId = 1;
         int id = 1;
 
-        Member actor = memberService.findByUsername("user3").get();
+        Member actor = memberService.findByUsername("user3");
         String actorApiKey = actor.getApiKey();
 
         ResultActions resultActions = mvc
@@ -233,8 +233,8 @@ public class ApiV1PostCommentControllerTest {
                 .andExpect(jsonPath("$.resultCode").value("201-1"))
                 .andExpect(jsonPath("$.msg").value("%d번 댓글이 작성되었습니다.".formatted(postComment.getId())))
                 .andExpect(jsonPath("$.data.id").value(postComment.getId()))
-                .andExpect(jsonPath("$.data.createDate").value(Matchers.startsWith(postComment.getCreateDate().toString().substring(0, 20))))
-                .andExpect(jsonPath("$.data.modifyDate").value(Matchers.startsWith(postComment.getModifyDate().toString().substring(0, 20))))
+                .andExpect(jsonPath("$.data.createDate").value(Matchers.startsWith(postComment.createDate.toString().substring(0, 20))))
+                .andExpect(jsonPath("$.data.modifyDate").value(Matchers.startsWith(postComment.modifyDate.toString().substring(0, 20))))
                 .andExpect(jsonPath("$.data.authorId").value(postComment.author.getId()))
                 .andExpect(jsonPath("$.data.authorName").value(postComment.author.getName()))
                 .andExpect(jsonPath("$.data.postId").value(postComment.post.getId()))

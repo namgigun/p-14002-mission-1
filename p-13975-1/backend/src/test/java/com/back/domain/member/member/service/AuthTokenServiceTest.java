@@ -106,7 +106,7 @@ public class AuthTokenServiceTest {
     @Test
     @DisplayName("authTokenService.genAccessToken(member);")
     void t4() {
-        Member memberUser1 = memberService.findByUsername("user1").get();
+        Member memberUser1 = memberService.findByUsername("user1");
 
         String accessToken = authTokenService.genAccessToken(memberUser1);
 

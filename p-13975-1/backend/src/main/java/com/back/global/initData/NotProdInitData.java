@@ -53,7 +53,7 @@ public class NotProdInitData {
         memberUser3.modifyApiKey(memberUser3.getUsername());
 
         customConfigProperties.getNotProdMembers().forEach(notProdMember -> {
-            Member socailMember = memberService.join(notProdMember.username(), null, notProdMember.nickname(), notProdMember.profileImgUrl());
+            Member socailMember = memberService.join(notProdMember.username(), "1234", notProdMember.nickname(), notProdMember.profileImgUrl());
             socailMember.modifyApiKey(notProdMember.apiKey());
         });
     }
@@ -62,9 +62,9 @@ public class NotProdInitData {
     public void work2() {
         if (postService.count() > 0) return;
 
-        Member memberUser1 = memberService.findByUsername("user1").get();
-        Member memberUser2 = memberService.findByUsername("user2").get();
-        Member memberUser3 = memberService.findByUsername("user3").get();
+        Member memberUser1 = memberService.findByUsername("user1");
+        Member memberUser2 = memberService.findByUsername("user2");
+        Member memberUser3 = memberService.findByUsername("user3");
 
         Post post1 = postService.write(memberUser1, "제목 1", "내용 1");
         Post post2 = postService.write(memberUser1, "제목 2", "내용 2");

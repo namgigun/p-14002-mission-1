@@ -42,7 +42,7 @@ public class Rq {
             return null;
         }
 
-        return memberService.findById(actor.getId()).get();
+        return memberService.findById(actor.getId());
     }
 
     public String getHeader(String name, String defaultValue) {

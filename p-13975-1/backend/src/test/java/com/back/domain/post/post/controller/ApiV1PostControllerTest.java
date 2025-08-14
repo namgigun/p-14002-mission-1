@@ -64,8 +64,8 @@ public class ApiV1PostControllerTest {
                 .andExpect(jsonPath("$.resultCode").value("201-1"))
                 .andExpect(jsonPath("$.msg").value("%d번 글이 작성되었습니다.".formatted(post.getId())))
                 .andExpect(jsonPath("$.data.id").value(post.getId()))
-                .andExpect(jsonPath("$.data.createDate").value(Matchers.startsWith(post.getCreateDate().toString().substring(0, 20))))
-                .andExpect(jsonPath("$.data.modifyDate").value(Matchers.startsWith(post.getModifyDate().toString().substring(0, 20))))
+                .andExpect(jsonPath("$.data.createDate").value(Matchers.startsWith(post.createDate.toString().substring(0, 20))))
+                .andExpect(jsonPath("$.data.modifyDate").value(Matchers.startsWith(post.modifyDate.toString().substring(0, 20))))
                 .andExpect(jsonPath("$.data.authorId").value(post.author.getId()))
                 .andExpect(jsonPath("$.data.authorName").value(post.author.getNickname()))
                 .andExpect(jsonPath("$.data.title").value("제목"));
@@ -74,7 +74,7 @@ public class ApiV1PostControllerTest {
     @Test
     @DisplayName("글 쓰기, with wrong apiKey, with valid accessToken")
     void t14() throws Exception {
-        Member actor = memberService.findByUsername("user1").get();
+        Member actor = memberService.findByUsername("user1");
         String actorAccessToken = memberService.genAccessToken(actor);
 
         ResultActions resultActions = mvc
@@ -100,7 +100,7 @@ public class ApiV1PostControllerTest {
     @Test
     @DisplayName("글 쓰기, with wrong apiKey cookie, with valid accessToken cookie")
     void t15() throws Exception {
-        Member actor = memberService.findByUsername("user1").get();
+        Member actor = memberService.findByUsername("user1");
         String actorAccessToken = memberService.genAccessToken(actor);
 
         ResultActions resultActions = mvc
@@ -286,7 +286,7 @@ public class ApiV1PostControllerTest {
     void t12() throws Exception {
         int id = 1;
 
-        Member actor = memberService.findByUsername("user3").get();
+        Member actor = memberService.findByUsername("user3");
         String actorApiKey = actor.getApiKey();
 
         ResultActions resultActions = mvc
@@ -337,7 +337,7 @@ public class ApiV1PostControllerTest {
     void t13() throws Exception {
         int id = 1;
 
-        Member actor = memberService.findByUsername("user3").get();
+        Member actor = memberService.findByUsername("user3");
         String actorApiKey = actor.getApiKey();
 
         ResultActions resultActions = mvc
@@ -374,8 +374,8 @@ public class ApiV1PostControllerTest {
                 .andExpect(handler().methodName("getItem"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(post.getId()))
-                .andExpect(jsonPath("$.createDate").value(Matchers.startsWith(post.getCreateDate().toString().substring(0, 20))))
-                .andExpect(jsonPath("$.modifyDate").value(Matchers.startsWith(post.getModifyDate().toString().substring(0, 20))))
+                .andExpect(jsonPath("$.createDate").value(Matchers.startsWith(post.createDate.toString().substring(0, 20))))
+                .andExpect(jsonPath("$.modifyDate").value(Matchers.startsWith(post.modifyDate.toString().substring(0, 20))))
                 .andExpect(jsonPath("$.authorId").value(post.author.getId()))
                 .andExpect(jsonPath("$.authorName").value(post.author.getNickname()))
                 .andExpect(jsonPath("$.title").value(post.title))
@@ -423,8 +423,8 @@ public class ApiV1PostControllerTest {
             Post post = posts.get(i);
             resultActions
                     .andExpect(jsonPath("$[%d].id".formatted(i)).value(post.getId()))
-                    .andExpect(jsonPath("$[%d].createDate".formatted(i)).value(Matchers.startsWith(post.getCreateDate().toString().substring(0, 20))))
-                    .andExpect(jsonPath("$[%d].modifyDate".formatted(i)).value(Matchers.startsWith(post.getModifyDate().toString().substring(0, 20))))
+                    .andExpect(jsonPath("$[%d].createDate".formatted(i)).value(Matchers.startsWith(post.createDate.toString().substring(0, 20))))
+                    .andExpect(jsonPath("$[%d].modifyDate".formatted(i)).value(Matchers.startsWith(post.modifyDate.toString().substring(0, 20))))
                     .andExpect(jsonPath("$[%d].authorId".formatted(i)).value(post.author.getId()))
                     .andExpect(jsonPath("$[%d].authorName".formatted(i)).value(post.author.getNickname()))
                     .andExpect(jsonPath("$[%d].title".formatted(i)).value(post.title));

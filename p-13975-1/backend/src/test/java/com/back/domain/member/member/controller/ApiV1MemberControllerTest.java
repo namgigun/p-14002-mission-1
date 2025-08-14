@@ -48,7 +48,7 @@ public class ApiV1MemberControllerTest {
                 )
                 .andDo(print());
 
-        Member member = memberService.findByUsername("usernew").get();
+        Member member = memberService.findByUsername("usernew");
 
         resultActions
                 .andExpect(handler().handlerType(ApiV1MemberController.class))
@@ -58,8 +58,8 @@ public class ApiV1MemberControllerTest {
                 .andExpect(jsonPath("$.msg").value("%s님 환영합니다. 회원가입이 완료되었습니다.".formatted(member.getName())))
                 .andExpect(jsonPath("$.data").exists())
                 .andExpect(jsonPath("$.data.id").value(member.getId()))
-                .andExpect(jsonPath("$.data.createDate").value(Matchers.startsWith(member.getCreateDate().toString().substring(0, 20))))
-                .andExpect(jsonPath("$.data.modifyDate").value(Matchers.startsWith(member.getModifyDate().toString().substring(0, 20))))
+                .andExpect(jsonPath("$.data.createDate").value(Matchers.startsWith(member.createDate.toString().substring(0, 20))))
+                .andExpect(jsonPath("$.data.modifyDate").value(Matchers.startsWith(member.modifyDate.toString().substring(0, 20))))
                 .andExpect(jsonPath("$.data.name").value(member.getName()))
                 .andExpect(jsonPath("$.data.isAdmin").value(member.isAdmin()));
     }
@@ -80,7 +80,7 @@ public class ApiV1MemberControllerTest {
                 )
                 .andDo(print());
 
-        Member member = memberService.findByUsername("user1").get();
+        Member member = memberService.findByUsername("user1");
 
         resultActions
                 .andExpect(handler().handlerType(ApiV1MemberController.class))
@@ -91,8 +91,8 @@ public class ApiV1MemberControllerTest {
                 .andExpect(jsonPath("$.data").exists())
                 .andExpect(jsonPath("$.data.item").exists())
                 .andExpect(jsonPath("$.data.item.id").value(member.getId()))
-                .andExpect(jsonPath("$.data.item.createDate").value(Matchers.startsWith(member.getCreateDate().toString().substring(0, 20))))
-                .andExpect(jsonPath("$.data.item.modifyDate").value(Matchers.startsWith(member.getModifyDate().toString().substring(0, 20))))
+                .andExpect(jsonPath("$.data.item.createDate").value(Matchers.startsWith(member.createDate.toString().substring(0, 20))))
+                .andExpect(jsonPath("$.data.item.modifyDate").value(Matchers.startsWith(member.modifyDate.toString().substring(0, 20))))
                 .andExpect(jsonPath("$.data.item.name").value(member.getName()))
                 .andExpect(jsonPath("$.data.item.isAdmin").value(member.isAdmin()))
                 .andExpect(jsonPath("$.data.apiKey").value(member.getApiKey()))
@@ -124,15 +124,15 @@ public class ApiV1MemberControllerTest {
                 )
                 .andDo(print());
 
-        Member member = memberService.findByUsername("user1").get();
+        Member member = memberService.findByUsername("user1");
 
         resultActions
                 .andExpect(handler().handlerType(ApiV1MemberController.class))
                 .andExpect(handler().methodName("me"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(member.getId()))
-                .andExpect(jsonPath("$.createDate").value(Matchers.startsWith(member.getCreateDate().toString().substring(0, 20))))
-                .andExpect(jsonPath("$.modifyDate").value(Matchers.startsWith(member.getModifyDate().toString().substring(0, 20))))
+                .andExpect(jsonPath("$.createDate").value(Matchers.startsWith(member.createDate.toString().substring(0, 20))))
+                .andExpect(jsonPath("$.modifyDate").value(Matchers.startsWith(member.modifyDate.toString().substring(0, 20))))
                 .andExpect(jsonPath("$.name").value(member.getName()))
                 .andExpect(jsonPath("$.username").value(member.getUsername()))
                 .andExpect(jsonPath("$.isAdmin").value(member.isAdmin()));
@@ -141,7 +141,7 @@ public class ApiV1MemberControllerTest {
     @Test
     @DisplayName("내 정보, with apiKey Cookie")
     void t4() throws Exception {
-        Member actor = memberService.findByUsername("user1").get();
+        Member actor = memberService.findByUsername("user1");
         String actorApiKey = actor.getApiKey();
 
         ResultActions resultActions = mvc
@@ -151,7 +151,7 @@ public class ApiV1MemberControllerTest {
                 )
                 .andDo(print());
 
-        Member member = memberService.findByUsername("user1").get();
+        Member member = memberService.findByUsername("user1");
 
         resultActions
                 .andExpect(handler().handlerType(ApiV1MemberController.class))
@@ -193,7 +193,7 @@ public class ApiV1MemberControllerTest {
     @Test
     @DisplayName("엑세스 토큰이 만료되었거나 유효하지 않다면 apiKey를 통해서 재발급")
     void t7() throws Exception {
-        Member actor = memberService.findByUsername("user1").get();
+        Member actor = memberService.findByUsername("user1");
         String actorApiKey = actor.getApiKey();
 
         ResultActions resultActions = mvc
