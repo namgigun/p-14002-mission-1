@@ -55,7 +55,7 @@ public class ApiV1PostControllerTest {
                 )
                 .andDo(print());
 
-        Post post = postService.findLatest().get();
+        Post post = postService.findLatest();
 
         resultActions
                 .andExpect(handler().handlerType(ApiV1PostController.class))
@@ -66,8 +66,8 @@ public class ApiV1PostControllerTest {
                 .andExpect(jsonPath("$.data.id").value(post.getId()))
                 .andExpect(jsonPath("$.data.createDate").value(Matchers.startsWith(post.getCreateDate().toString().substring(0, 20))))
                 .andExpect(jsonPath("$.data.modifyDate").value(Matchers.startsWith(post.getModifyDate().toString().substring(0, 20))))
-                .andExpect(jsonPath("$.data.authorId").value(post.getAuthor().getId()))
-                .andExpect(jsonPath("$.data.authorName").value(post.getAuthor().getNickname()))
+                .andExpect(jsonPath("$.data.authorId").value(post.author.getId()))
+                .andExpect(jsonPath("$.data.authorName").value(post.author.getNickname()))
                 .andExpect(jsonPath("$.data.title").value("제목"));
     }
 
@@ -367,7 +367,7 @@ public class ApiV1PostControllerTest {
                 )
                 .andDo(print());
 
-        Post post = postService.findById(id).get();
+        Post post = postService.findById(id);
 
         resultActions
                 .andExpect(handler().handlerType(ApiV1PostController.class))
@@ -376,10 +376,10 @@ public class ApiV1PostControllerTest {
                 .andExpect(jsonPath("$.id").value(post.getId()))
                 .andExpect(jsonPath("$.createDate").value(Matchers.startsWith(post.getCreateDate().toString().substring(0, 20))))
                 .andExpect(jsonPath("$.modifyDate").value(Matchers.startsWith(post.getModifyDate().toString().substring(0, 20))))
-                .andExpect(jsonPath("$.authorId").value(post.getAuthor().getId()))
-                .andExpect(jsonPath("$.authorName").value(post.getAuthor().getNickname()))
-                .andExpect(jsonPath("$.title").value(post.getTitle()))
-                .andExpect(jsonPath("$.content").value(post.getContent()));
+                .andExpect(jsonPath("$.authorId").value(post.author.getId()))
+                .andExpect(jsonPath("$.authorName").value(post.author.getNickname()))
+                .andExpect(jsonPath("$.title").value(post.title))
+                .andExpect(jsonPath("$.content").value(post.content));
     }
 
     @Test
@@ -425,9 +425,9 @@ public class ApiV1PostControllerTest {
                     .andExpect(jsonPath("$[%d].id".formatted(i)).value(post.getId()))
                     .andExpect(jsonPath("$[%d].createDate".formatted(i)).value(Matchers.startsWith(post.getCreateDate().toString().substring(0, 20))))
                     .andExpect(jsonPath("$[%d].modifyDate".formatted(i)).value(Matchers.startsWith(post.getModifyDate().toString().substring(0, 20))))
-                    .andExpect(jsonPath("$[%d].authorId".formatted(i)).value(post.getAuthor().getId()))
-                    .andExpect(jsonPath("$[%d].authorName".formatted(i)).value(post.getAuthor().getNickname()))
-                    .andExpect(jsonPath("$[%d].title".formatted(i)).value(post.getTitle()));
+                    .andExpect(jsonPath("$[%d].authorId".formatted(i)).value(post.author.getId()))
+                    .andExpect(jsonPath("$[%d].authorName".formatted(i)).value(post.author.getNickname()))
+                    .andExpect(jsonPath("$[%d].title".formatted(i)).value(post.title));
         }
     }
 }

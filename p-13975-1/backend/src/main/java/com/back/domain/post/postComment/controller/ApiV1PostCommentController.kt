@@ -27,7 +27,7 @@ class ApiV1PostCommentController(
     fun getItems(
         @PathVariable postId: Int
     ): List<PostCommentDto> {
-        val post = postService.findById(postId).orElseThrow()
+        val post = postService.findById(postId)
         return post.comments.map { PostCommentDto(it) }
     }
 
@@ -38,8 +38,8 @@ class ApiV1PostCommentController(
         @PathVariable postId: Int,
         @PathVariable id: Int
     ): PostCommentDto {
-        val post = postService.findById(postId).orElseThrow()
-        val postComment = post.findCommentById(id).orElseThrow()
+        val post = postService.findById(postId)
+        val postComment = post.findCommentById(id)
 
         return PostCommentDto(postComment)
     }
@@ -52,8 +52,8 @@ class ApiV1PostCommentController(
         @PathVariable id: Int
     ): RsData<Void> {
         val actor = rq.actor
-        val post = postService.findById(postId).orElseThrow()
-        val postComment = post.findCommentById(id).orElseThrow()
+        val post = postService.findById(postId)
+        val postComment = post.findCommentById(id)
 
         postComment.checkActorCanDelete(actor)
         postService.deleteComment(post, postComment)
@@ -81,8 +81,8 @@ class ApiV1PostCommentController(
         @RequestBody reqBody: @Valid PostCommentModifyReqBody
     ): RsData<Void> {
         val actor = rq.actor
-        val post = postService.findById(postId).orElseThrow()
-        val postComment = post.findCommentById(id).orElseThrow()
+        val post = postService.findById(postId)
+        val postComment = post.findCommentById(id)
 
         postComment.checkActorCanModify(actor)
         postService.modifyComment(postComment, reqBody.content)
@@ -106,7 +106,7 @@ class ApiV1PostCommentController(
         @RequestBody @Valid reqBody: PostCommentWriteReqBody
     ): RsData<PostCommentDto> {
         val actor = rq.actor
-        val post = postService.findById(postId).orElseThrow()
+        val post = postService.findById(postId)
 
         val postComment = postService.writeComment(actor, post, reqBody.content)
         postService.flush() // 즉시 DB 반영
