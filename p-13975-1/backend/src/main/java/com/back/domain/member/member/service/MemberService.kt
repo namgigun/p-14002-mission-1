@@ -30,11 +30,11 @@ class MemberService(
         return memberRepository.save(member)
     }
 
-    fun findByUsername(username: String): Member? = memberRepository.findByUsername(username)
+    fun findByUsername(username: String): Member = memberRepository.findByUsername(username)
         ?: throw UsernameNotFoundException("사용자를 찾을 수 없습니다.")
 
 
-    fun findByApiKey(apiKey: String): Member? = memberRepository.findByApiKey(apiKey)
+    fun findByApiKey(apiKey: String): Member = memberRepository.findByApiKey(apiKey)
         ?: throw ServiceException("401-3", "API 키가 유효하지 않습니다.")
 
 
