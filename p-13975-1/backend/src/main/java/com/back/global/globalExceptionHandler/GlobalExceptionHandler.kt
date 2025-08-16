@@ -1,3 +1,4 @@
+package com.back.global.globalExceptionHandler
 
 import com.back.global.exception.ServiceException
 import com.back.global.rsData.RsData
