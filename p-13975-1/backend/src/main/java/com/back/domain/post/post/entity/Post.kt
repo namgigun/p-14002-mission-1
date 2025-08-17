@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor
 @Entity
 @NoArgsConstructor
 class Post(
-    @JvmField @field:ManyToOne val author: Member,
-    @JvmField var title: String,
-    @JvmField var content: String
+    @field:ManyToOne val author: Member,
+    var title: String,
+    var content: String
 ) : BaseEntity() {
 
     @OneToMany(

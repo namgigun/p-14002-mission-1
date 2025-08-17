@@ -87,7 +87,7 @@ public class AuthTokenServiceTest {
     void t3() {
         Map<String, Object> payload = Map.of("name", "Paul", "age", 23);
 
-        String jwt = Ut.jwt.toString(
+        String jwt = Ut.jwt.INSTANCE.toString(
                 jwtSecretKey,
                 accessTokenExpirationSeconds,
                 payload
@@ -95,10 +95,10 @@ public class AuthTokenServiceTest {
 
         assertThat(jwt).isNotBlank();
 
-        assertThat(Ut.jwt.isValid(jwtSecretKey, jwt))
+        assertThat(Ut.jwt.INSTANCE.isValid(jwtSecretKey, jwt))
                 .isTrue();
 
-        Map<String, Object> parsedPayload = Ut.jwt.payload(jwtSecretKey, jwt);
+        Map<String, Object> parsedPayload = Ut.jwt.INSTANCE.payload(jwtSecretKey, jwt);
 
         assertThat(parsedPayload).containsAllEntriesOf(payload);
     }

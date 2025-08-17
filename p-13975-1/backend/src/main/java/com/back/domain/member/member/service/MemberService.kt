@@ -18,7 +18,6 @@ class MemberService(
 ) {
     fun count(): Long = memberRepository.count()
 
-    @JvmOverloads
     fun join(username: String, password: String, nickname: String, profileImgUrl: String? = null): Member {
         if (memberRepository.findByUsername(username) != null) {
             throw ServiceException("409-1", "이미 존재하는 아이디입니다.")

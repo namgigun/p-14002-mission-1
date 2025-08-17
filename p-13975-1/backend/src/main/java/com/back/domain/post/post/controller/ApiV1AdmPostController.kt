@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController
 class ApiV1AdmPostController(
     private val postService: PostService
 ) {
-    @JvmRecord
     data class AdmPostCountResBody(
         val all: Long
     )
