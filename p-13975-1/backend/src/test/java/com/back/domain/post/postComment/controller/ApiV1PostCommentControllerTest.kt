@@ -34,7 +34,7 @@ class ApiV1PostCommentControllerTest @Autowired constructor(
 
         val resultActions = mvc
             .perform(
-                MockMvcRequestBuilders.get("/api/v1/posts/%d/comments/%d".formatted(postId, id))
+                MockMvcRequestBuilders.get("/api/v1/posts/${postId}/comments/${id}")
             )
             .andDo(MockMvcResultHandlers.print())
 
@@ -67,7 +67,7 @@ class ApiV1PostCommentControllerTest @Autowired constructor(
 
         val resultActions = mvc
             .perform(
-                MockMvcRequestBuilders.get("/api/v1/posts/%d/comments".formatted(postId))
+                MockMvcRequestBuilders.get("/api/v1/posts/${postId}/comments")
             )
             .andDo(MockMvcResultHandlers.print())
 
@@ -84,21 +84,21 @@ class ApiV1PostCommentControllerTest @Autowired constructor(
             val postComment = comments[i]
 
             resultActions
-                .andExpect(MockMvcResultMatchers.jsonPath("$[%d].id".formatted(i)).value(postComment.id))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[$i].id").value(postComment.id))
                 .andExpect(
-                    MockMvcResultMatchers.jsonPath("$[%d].createDate".formatted(i))
+                    MockMvcResultMatchers.jsonPath("$[$i].createDate")
                         .value(Matchers.startsWith(postComment.createDate.toString().substring(0, 20)))
                 )
                 .andExpect(
-                    MockMvcResultMatchers.jsonPath("$[%d].modifyDate".formatted(i))
+                    MockMvcResultMatchers.jsonPath("$[$i].modifyDate")
                         .value(Matchers.startsWith(postComment.modifyDate.toString().substring(0, 20)))
                 )
-                .andExpect(MockMvcResultMatchers.jsonPath("$[%d].authorId".formatted(i)).value(postComment.author.id))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[$i].authorId").value(postComment.author.id))
                 .andExpect(
-                    MockMvcResultMatchers.jsonPath("$[%d].authorName".formatted(i)).value(postComment.author.name)
+                    MockMvcResultMatchers.jsonPath("$[$i].authorName").value(postComment.author.name)
                 )
-                .andExpect(MockMvcResultMatchers.jsonPath("$[%d].postId".formatted(i)).value(postComment.post.id))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[%d].content".formatted(i)).value(postComment.content))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[$i].postId").value(postComment.post.id))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[$i].content").value(postComment.content))
         }
     }
 
@@ -120,7 +120,7 @@ class ApiV1PostCommentControllerTest @Autowired constructor(
             .andExpect(MockMvcResultMatchers.handler().methodName("delete"))
             .andExpect(MockMvcResultMatchers.status().isOk())
             .andExpect(MockMvcResultMatchers.jsonPath("$.resultCode").value("200-1"))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.msg").value("%d번 댓글이 삭제되었습니다.".formatted(id)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.msg").value("${id}번 댓글이 삭제되었습니다."))
     }
 
     @Test
@@ -176,7 +176,7 @@ class ApiV1PostCommentControllerTest @Autowired constructor(
             .andExpect(MockMvcResultMatchers.handler().methodName("modify"))
             .andExpect(MockMvcResultMatchers.status().isOk())
             .andExpect(MockMvcResultMatchers.jsonPath("$.resultCode").value("200-1"))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.msg").value("%d번 댓글이 수정되었습니다.".formatted(id)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.msg").value("${id}번 댓글이 수정되었습니다."))
     }
 
     @Test

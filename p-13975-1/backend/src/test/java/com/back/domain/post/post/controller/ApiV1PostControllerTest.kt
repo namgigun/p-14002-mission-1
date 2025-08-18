@@ -306,7 +306,7 @@ class ApiV1PostControllerTest @Autowired constructor(
             .andExpect(MockMvcResultMatchers.handler().methodName("modify"))
             .andExpect(MockMvcResultMatchers.status().isOk())
             .andExpect(MockMvcResultMatchers.jsonPath("$.resultCode").value("200-1"))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.msg").value("%d번 글이 수정되었습니다.".formatted(id)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.msg").value("${id}번 글이 수정되었습니다."))
     }
 
     @Test
@@ -339,7 +339,7 @@ class ApiV1PostControllerTest @Autowired constructor(
             .andExpect(MockMvcResultMatchers.handler().methodName("modify"))
             .andExpect(MockMvcResultMatchers.status().isForbidden())
             .andExpect(MockMvcResultMatchers.jsonPath("$.resultCode").value("403-1"))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.msg").value("%d번 글 수정권한이 없습니다.".formatted(id)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.msg").value("${id}번 글 수정권한이 없습니다."))
     }
 
 
@@ -360,7 +360,7 @@ class ApiV1PostControllerTest @Autowired constructor(
             .andExpect(MockMvcResultMatchers.handler().methodName("delete"))
             .andExpect(MockMvcResultMatchers.status().isOk())
             .andExpect(MockMvcResultMatchers.jsonPath("$.resultCode").value("200-1"))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.msg").value("%d번 글이 삭제되었습니다.".formatted(id)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.msg").value("${id}번 글이 삭제되었습니다."))
     }
 
     @Test
@@ -383,7 +383,7 @@ class ApiV1PostControllerTest @Autowired constructor(
             .andExpect(MockMvcResultMatchers.handler().methodName("delete"))
             .andExpect(MockMvcResultMatchers.status().isForbidden())
             .andExpect(MockMvcResultMatchers.jsonPath("$.resultCode").value("403-2"))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.msg").value("%d번 글 삭제권한이 없습니다.".formatted(id)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.msg").value("${id}번 글 삭제권한이 없습니다."))
     }
 
 
@@ -460,18 +460,18 @@ class ApiV1PostControllerTest @Autowired constructor(
         for (i in posts.indices) {
             val post = posts[i]
             resultActions
-                .andExpect(MockMvcResultMatchers.jsonPath("$[%d].id".formatted(i)).value(post.id))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[$i].id").value(post.id))
                 .andExpect(
-                    MockMvcResultMatchers.jsonPath("$[%d].createDate".formatted(i))
+                    MockMvcResultMatchers.jsonPath("$[$i].createDate")
                         .value(Matchers.startsWith(post.createDate.toString().substring(0, 20)))
                 )
                 .andExpect(
-                    MockMvcResultMatchers.jsonPath("$[%d].modifyDate".formatted(i))
+                    MockMvcResultMatchers.jsonPath("$[$i].modifyDate")
                         .value(Matchers.startsWith(post.modifyDate.toString().substring(0, 20)))
                 )
-                .andExpect(MockMvcResultMatchers.jsonPath("$[%d].authorId".formatted(i)).value(post.author.id))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[%d].authorName".formatted(i)).value(post.author.nickname))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[%d].title".formatted(i)).value(post.title))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[$i].authorId").value(post.author.id))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[$i].authorName").value(post.author.nickname))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[$i].title").value(post.title))
         }
     }
 }
