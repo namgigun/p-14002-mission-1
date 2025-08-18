@@ -2,13 +2,12 @@ package com.back.global.security
 
 import com.back.domain.member.member.service.MemberService
 import com.back.global.rq.Rq
+import com.back.standard.extensions.base64Decode
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.security.core.Authentication
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler
 import org.springframework.stereotype.Component
-import java.nio.charset.StandardCharsets
-import java.util.*
 
 @Component
 class CustomOAuth2LoginSuccessHandler(
@@ -29,10 +28,9 @@ class CustomOAuth2LoginSuccessHandler(
 
         // ✅ state 파라미터에서 redirectUrl 복원
         val redirectUrl = request.getParameter("state")
-            ?.let { state ->
-                val decoded = String(Base64.getUrlDecoder().decode(state), StandardCharsets.UTF_8)
-                decoded.substringBefore("#") // '#' 앞 부분이 redirectUrl
-            } ?: "/"
+            ?.base64Decode()
+            ?.substringBefore("#")
+            ?: "/"
 
         rq.sendRedirect(redirectUrl)
     }

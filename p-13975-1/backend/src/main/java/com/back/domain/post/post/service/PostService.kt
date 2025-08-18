@@ -4,6 +4,7 @@ import com.back.domain.member.member.entity.Member
 import com.back.domain.post.post.entity.Post
 import com.back.domain.post.post.repository.PostRepository
 import com.back.domain.post.postComment.entity.PostComment
+import com.back.standard.extensions.getOrThrow
 import org.springframework.stereotype.Service
 
 @Service
@@ -18,7 +19,7 @@ class PostService(
     }
 
     fun findById(id: Int): Post = postRepository.findById(id)
-        .orElseThrow { NoSuchElementException() }
+        .orElse(null).getOrThrow()
 
     fun findAll(): List<Post> = postRepository.findAll()
 
@@ -43,9 +44,7 @@ class PostService(
         postRepository.delete(post)
     }
 
-    fun findLatest(): Post = postRepository.findFirstByOrderByIdDesc()
-        ?: throw NoSuchElementException()
-
+    fun findLatest(): Post = postRepository.findFirstByOrderByIdDesc().getOrThrow()
 
     fun flush() {
         postRepository.flush()

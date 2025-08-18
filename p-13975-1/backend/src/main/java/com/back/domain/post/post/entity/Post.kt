@@ -4,6 +4,7 @@ import com.back.domain.member.member.entity.Member
 import com.back.domain.post.postComment.entity.PostComment
 import com.back.global.exception.ServiceException
 import com.back.global.jpa.entity.BaseEntity
+import com.back.standard.extensions.getOrThrow
 import jakarta.persistence.*
 import lombok.NoArgsConstructor
 
@@ -39,7 +40,7 @@ class Post(
     }
 
     fun findCommentById(id: Int): PostComment {
-        return _comments.find { it.id == id } ?: throw NoSuchElementException()
+        return _comments.find { it.id == id }.getOrThrow()
     }
 
     fun deleteComment(postComment: PostComment): Boolean {

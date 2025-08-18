@@ -62,7 +62,6 @@ class Member(
 
     val authorities: Collection<GrantedAuthority>
         get() = authoritiesAsStringList
-            .stream()
             .map { SimpleGrantedAuthority(it) }
             .toList()
 
