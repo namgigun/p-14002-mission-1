@@ -17,7 +17,8 @@ class PostService(
         return postRepository.save(post)
     }
 
-    fun findById(id: Int): Post = postRepository.findById(id).orElseThrow{NoSuchElementException()}
+    fun findById(id: Int): Post = postRepository.findById(id)
+        .orElseThrow { NoSuchElementException() }
 
     fun findAll(): List<Post> = postRepository.findAll()
 
