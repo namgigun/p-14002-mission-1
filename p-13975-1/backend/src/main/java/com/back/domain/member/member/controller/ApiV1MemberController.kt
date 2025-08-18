@@ -3,7 +3,6 @@ package com.back.domain.member.member.controller
 import com.back.domain.member.member.dto.MemberDto
 import com.back.domain.member.member.dto.MemberWithUsernameDto
 import com.back.domain.member.member.service.MemberService
-import com.back.global.exception.ServiceException
 import com.back.global.rq.Rq
 import com.back.global.rsData.RsData
 import io.swagger.v3.oas.annotations.Operation
@@ -65,7 +64,6 @@ class ApiV1MemberController(
     @Operation(summary = "로그인")
     fun login(@Valid @RequestBody reqBody: MemberLoginReqBody): RsData<MemberLoginResBody> {
         val member = memberService.findByUsername(reqBody.username)
-            ?: throw ServiceException("401-1", "존재하지 않는 아이디입니다.")
 
         memberService.checkPassword(member, reqBody.password)
         val accessToken = memberService.genAccessToken(member)
