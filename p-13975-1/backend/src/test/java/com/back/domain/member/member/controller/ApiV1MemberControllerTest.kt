@@ -14,7 +14,6 @@ import org.springframework.security.test.context.support.WithUserDetails
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.*
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.transaction.annotation.Transactional
@@ -155,7 +154,7 @@ class ApiV1MemberControllerTest @Autowired constructor(
     @DisplayName("내 정보, with apiKey Cookie")
     @Throws(Exception::class)
     fun t4() {
-        val actor = memberService!!.findByUsername("user1")
+        val actor = memberService.findByUsername("user1")
         val actorApiKey = actor.apiKey
 
         val resultActions = mvc
@@ -163,7 +162,7 @@ class ApiV1MemberControllerTest @Autowired constructor(
                 MockMvcRequestBuilders.get("/api/v1/members/me")
                     .cookie(Cookie("apiKey", actorApiKey))
             )
-            .andDo(MockMvcResultHandlers.print())
+            .andDo(print())
 
         val member = memberService.findByUsername("user1")
 
@@ -171,6 +170,7 @@ class ApiV1MemberControllerTest @Autowired constructor(
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1MemberController::class.java))
             .andExpect(MockMvcResultMatchers.handler().methodName("me"))
             .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(member.nickname))
     }
 
 
@@ -182,7 +182,7 @@ class ApiV1MemberControllerTest @Autowired constructor(
             .perform(
                 MockMvcRequestBuilders.delete("/api/v1/members/logout")
             )
-            .andDo(MockMvcResultHandlers.print())
+            .andDo(print())
 
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1MemberController::class.java))
@@ -207,11 +207,8 @@ class ApiV1MemberControllerTest @Autowired constructor(
 
     @Test
     @DisplayName("엑세스 토큰이 만료되었거나 유효하지 않다면 apiKey를 통해서 재발급")
-    @Throws(
-        Exception::class
-    )
     fun t7() {
-        val actor = memberService!!.findByUsername("user1")
+        val actor = memberService.findByUsername("user1")
         val actorApiKey = actor.apiKey
 
         val resultActions = mvc
@@ -219,7 +216,7 @@ class ApiV1MemberControllerTest @Autowired constructor(
                 MockMvcRequestBuilders.get("/api/v1/members/me")
                     .header("Authorization", "Bearer $actorApiKey wrong-access-token")
             )
-            .andDo(MockMvcResultHandlers.print())
+            .andDo(print())
 
         resultActions
             .andExpect(MockMvcResultMatchers.handler().handlerType(ApiV1MemberController::class.java))
@@ -240,16 +237,13 @@ class ApiV1MemberControllerTest @Autowired constructor(
 
     @Test
     @DisplayName("Authorization 헤더가 Bearer 형식이 아닐 때 오류")
-    @Throws(
-        Exception::class
-    )
     fun t8() {
         val resultActions = mvc
             .perform(
                 MockMvcRequestBuilders.get("/api/v1/members/me")
                     .header("Authorization", "key")
             )
-            .andDo(MockMvcResultHandlers.print())
+            .andDo(print())
 
         resultActions
             .andExpect(MockMvcResultMatchers.status().isUnauthorized())
